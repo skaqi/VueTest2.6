@@ -1,8 +1,34 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
-<head>
-    <title>标题</title>
-</head>
-<body>
-    嗨，hello world1111111!
-</body>
+	<head>
+		<title>标题</title>
+		<!-- 我的cdn引入 -->
+		<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+	</head>
+
+	<body>
+		<div id="app">
+			{{msg}}
+			<br/>
+			<input type="button" id="test" value="点击我" @click="Test" />
+		</div>
+	</body>
 </html>
+<script>
+	new Vue({
+		name: "hello",
+		data: {
+			msg: "我的信息"
+		},
+		created() {
+			console.log("created...")
+		},
+		mounted() {
+			console.log("mounted...")
+		},
+		methods: {
+			Test() {
+				console.log("输出")
+			}
+		}
+	}).$mount("#app")
+</script>

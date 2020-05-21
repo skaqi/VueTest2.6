@@ -1,0 +1,59 @@
+首先三个区域:工作区、暂存区、仓库
+git与github区别:git是软件,github是仓库(该站点下也有git服务,相当于包含关系)
+
+0.右键git bash here启动git
+
+1.配置
+git config --global "用户名"
+git config --global "密码"
+
+
+2.初始化
+mkdir test --使用linux命令行创建目录
+cd test --转到目录（一定注意进入目录）
+git init  --初始化
+
+
+3.常规操作
+git add --添加文件从工作区到暂存区,3种使用方法:git add 文件名;git add 文件1 文件2 文件3;
+git add . --是提交全部文件
+git commit -m "本次提交描述" --从暂存区提交到仓库
+git status --查看当前状态
+
+
+4.查看日志
+git log --查看日志
+git log --pretty=oneline --推荐这种查看日志方式
+git reflog --想要回到未来进行日志ID查看，再使用reset
+
+git reset --hard 提交编号  --提交编号就是: 回到的位置
+
+
+5.提交与拉取(线上创建完仓库后，两种协议方式https和ssh)
+a、git clone "地址"  --先克隆（一定注意cd进入目录中去）
+b、然后用git add,git commit,操作本地工作区与暂存区
+c、配置git隐藏的config文件的用户名和密码(.git隐藏文件夹下的config文件配置下:https://skaqi:密码@github.com/skaqi/hello-world.git)
+d、再用git push提交线上，git pull拉取线上
+
+
+6.分支
+查看分支git branch
+添加分支git branch 分支名称
+切换分支git checkout 分支名称
+删除分支git branch -d 分支名称
+合并分支git merge 被合并的分支名称
+
+
+7.可以不基于命令行，使用图形化界面
+a、github for desktop 官方软件
+b、sources tree
+c、tortoisegit
+d、右键自带的Git GUI Here 相对比较弱
+
+
+
+
+
+看到好的项目时，右上角功能是？：
+watch是关注动态，star是点赞（可在点赞记录中找到你点赞的很多项目），fork是导入现有项目状态下的收藏（作用：修改开源项目）
+TEST

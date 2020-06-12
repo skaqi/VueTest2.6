@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <script src="vue.min.js"></script>
+    <title>Document</title>
+</head>
+<body>
+    <div id="app">
+        <!-- v-model 双向绑定 ， 只能绑定value属性-->
+        <!-- :class 绑定样式 1.绑定数组 2. 三元表达式 3.数组嵌套 -->
+        <!-- :style 1.键值对直接填写法 2.键值对对象符合json格式 3.多个data可以用数组接收-->
+        <!-- v-for  以可循环四种对象 1.普通数组 2. 对象数组 3.对象 4.迭代数字 5.默认以索引绑定，需要使用key属性改变默认设置-->
+        <!-- v-if v-show 显示/影藏 -->
+
+        <!-- <p :class="['backg',flag?'fontcolor':'']">{{msg}}</p> -->
+        <!-- <p :class="['backg',{'fontcolor':flag}]">{{msg}}</p> -->
+
+        <!-- <p :style="[style1,style2]">{{msg}}</p>
+        <input type="text" v-model="msg">
+        <button @click="change">变</button> -->
+        <!-- <div v-for="userId in userIds">{{userId}}</div> -->
+        <!-- <div v-for="(user,i) in userList">id: {{user.id}}; 姓名: {{user.name}}; 索引: {{i}}</div> -->
+        <!-- <div v-for="item in 10">{{item}}</div> -->
+        <!-- <div v-for="(value, key,index) in userInfo">值：{{value}} ； 键：{{key}} ；索引：{{index}}</div> -->
+    <!-- <select>
+        <option  v-for="(user,i) in userList" :key="user.id">{{user.name}}</option>
+    </select>
+    <button @click="addUser">添加人</button> -->
+    <div v-if="isif">div1</div>
+    <div v-show="isShow">div2</div>
+
+    </div>
+</body>
+</html>
+<script>
+var vm = new Vue({
+    el:"#app",
+    data:{
+        msg:"Hello World",
+        flag:false,
+        style1:{'background-color': 'brown', color:'white'},
+        style2:{'font-size':"18px"},
+        userIds:[1,2,3,4,5,6],
+        userList:[
+            {id:1, name:"张三"},
+            {id:2, name:"李四"},
+            {id:3, name:"王五"},
+            {id:4, name:"赵六"}
+        ],
+        userInfo:{id:4, name:"赵六"},
+        isif:true,
+        isShow:true,
+    },
+    methods: {
+        change(){
+            this.style2['font-size'] = "22px";
+        },
+        addUser(){
+            this.userList.unshift({id:5, name:"田七"})
+        }
+    },
+})
+</script>
+<style>
+.backg{
+    background-color: aquamarine;
+}
+.fontcolor{
+    color:red;
+}
+.fontcolor1{
+    color:blue;
+}
+</style>

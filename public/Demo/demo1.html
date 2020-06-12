@@ -1,0 +1,87 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <script src="jquery-2.2.2.min.js"></script>
+    <script src="vue.min.js"></script>
+</head>
+<body>
+    <div id="app">
+        <!-- {{}} 插值表达式 可以在其中写上其他内容-->
+        <!-- v-cloak -->
+        <!-- v-text 1.会覆盖他所在标签的所有内容，2.可以直接渲染-->
+        <!-- v-html 可以将文本渲染成html-->
+        <!-- v-bind 对标签属性进行绑定 简写 :-->
+        <!-- v-on 绑定事件 简写 @ -->
+
+        <!-- <p>{{message}}大家好才是真的好</p>
+        <p v-text="message">他好我也好</p> -->
+        <!-- <p v-html="htmlText" id="htmlp"></p>
+        <p v-text="htmlText" id="textp"></p> -->
+        <input type="button" id="btn" :value="buttonText" @click="clickiMe">
+    </div>
+</body>
+</html>
+<!-- <script type="text/x-jsrender" id="jsr">
+    <div id="app">
+        <p>{{:userName}}</p>
+    </div>
+</script> -->
+<script>
+//原生js -> Jquery -> JsRender -> vue.js
+//MVVM: M=> model ; V=> 视图 ; VM => ViewModel
+
+    var vm = new Vue({
+    el:"#app",
+    data:{
+        message:"Hello World",
+        htmlText:"<b>我是一段文本</b>",
+        buttonText:"我是按钮"
+    },
+    methods: {
+        clickiMe(){
+            this.buttonText="我是按钮1111";
+        }
+    },
+});
+
+// document.getElementById("btn").onclick = function(){
+//     alert();
+// }
+
+
+
+
+
+// document.getElementById("app")
+// var doms = document.getElementsByClassName("xxx");
+// var xhr
+// if(window.XMLHttpRequest){
+//     xhr= new XMLHttpRequest();
+// }
+// else{
+//     xhr =new ActiveXObject("")
+// }
+// xhr.open("GET",url);
+// xhr.send(data);
+// xhr.onreadystatechange = function(){
+//     if(xhr.readyState == 200){
+//         JSON.parse(xhr.responseText)
+//     }
+// }
+// $.post(url,data,function(res){
+//    //$("#app").append("<p>"+res.userName+"</p>");
+//     var htmlText = $("#jsr").render(res);
+//     $("#app").append(htmlText);
+// })
+// document.getElementById("htmlp").innerHTML="<b>我是一段文本</b>"
+// document.getElementById("textp").innerText="<b>我是一段文本</b>"
+</script>
+<style>
+    [v-cloak]{
+        display: none;
+    }
+</style>

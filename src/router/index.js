@@ -1,12 +1,19 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
+
 import ProductList from '../views/ProductList.vue'
 import ProductDetail from '../views/ProductDetail.vue'
+
+import Home from '../views/Home.vue'
+import Detail from '../views/Detail.vue'
+
+
 
 Vue.use(VueRouter)
 
 const routes = [
-	/* 【手机商城】
+	/* 朝夕教育Ace直播-三次vue购物车
+	【手机商城】
 		搜索功能：使用回调函数：getProducts(fun) {
 														if (fun != null) {
 																fun();
@@ -20,7 +27,7 @@ const routes = [
 			3、锚点：document.documentElement.scrollTop
 		购物车：添加购物车
 	 */
-  {
+  /* {
     path: '/',
     name: 'productList',
     component: ProductList
@@ -34,9 +41,27 @@ const routes = [
 	  path: '/shoppingCart',
 	  name: 'shoppingCart',
 	  component: ShoppingCart
+	}, */
+	
+	
+	/* 朝夕教育Ace直播-四次vue专题课
+		实体搭建与指令讲解：基础，位置：public/Demo
+		首页（朝夕集市网图片)：
+			
+		详情：
+			qs使用
+	 
+	 */
+	{
+	  path: '/',
+	  name: 'home',
+	  component: Home
 	},
-	
-	
+	{
+	  path: '/detail',
+	  name: 'detail',
+	  component: Detail
+	},
 ]
 
 const router = new VueRouter({

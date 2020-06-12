@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <script src="vue.min.js"></script>
+    <title>Document</title>
+</head>
+
+<body>
+    <div id="app">
+        <p>{{score}}</p>
+        <p>{{level}}</p>
+        <input type="button" value="开始抽奖" @click="start()">
+        <input type="button" value="停止" @click="stop()">
+    </div>
+</body>
+
+</html>
+<script>
+    var vm = new Vue({
+        el: "#app",
+        data: {
+            score: 0,
+            level: null,
+            intervalIndex:null
+        },
+        methods: {
+            start() {
+                if(this.intervalIndex == null){
+             this.intervalIndex =  setInterval(() => {
+                    //Math.random() 生成 0~1之间的随机数
+                    this.score = parseInt(Math.random() * 100);
+                    //switch语句的范围判断
+                    switch (true) {
+                        case this.score < 30:
+                            this.level = "参与奖"
+                            break;
+                        case this.score >= 30 && this.score < 65:
+                            this.level = "三等奖"
+                            break;
+                        case this.score >= 65 && this.score < 85:
+                            this.level = "二等奖"
+                            break;
+                        case this.score >= 85:
+                            this.level = "一等奖"
+                            break;
+                    }
+                }, 50)
+            }
+            },
+            stop(){
+                clearInterval(this.intervalIndex);
+                this.intervalIndex = null
+            }
+        },
+    });
+</script>

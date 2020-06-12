@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <script src="vue.min.js"></script>
+    <title>Document</title>
+</head>
+<body>
+    <div id="app">
+        <input type="text" v-model="score">
+        <br>
+        <input type="range" v-model= "score" min="0" :max="maxValue">
+        <br>
+        <select v-model="maxValue">
+            <option value="100">100</option>
+            <option value="1000">1000</option>
+            <option value="10000">10000</option>
+        </select>
+    </div>
+</body>
+</html>
+<script>
+var vm = new Vue({
+    el:"#app",
+    data:{
+        score:50,
+        maxValue:100,
+    }
+})
+</script>

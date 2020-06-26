@@ -7,6 +7,7 @@ import ProductDetail from '../views/ProductDetail.vue'
 import Home from '../views/Home.vue'
 import Detail from '../views/Detail.vue'
 
+import RatePF from '../views/评分/RatePF.vue'
 
 
 Vue.use(VueRouter)
@@ -27,7 +28,7 @@ const routes = [
 			3、锚点：document.documentElement.scrollTop
 		购物车：添加购物车
 	 */
-  /* {
+	/* {
     path: '/',
     name: 'productList',
     component: ProductList
@@ -42,17 +43,16 @@ const routes = [
 	  name: 'shoppingCart',
 	  component: ShoppingCart
 	}, */
-	
-	
+
+
 	/* 朝夕教育Ace直播-四次vue专题课
 		实体搭建与指令讲解：基础，位置：public/Demo
 		首页（朝夕集市网图片)：
 			
 		详情：
 			qs使用
-	 
 	 */
-	{
+	/* {
 	  path: '/',
 	  name: 'home',
 	  component: Home
@@ -61,11 +61,19 @@ const routes = [
 	  path: '/detail',
 	  name: 'detail',
 	  component: Detail
-	},
+	}, */
+
+
+	//评分组件
+	{
+		path: '/',
+		name: 'RatePF',
+		component: RatePF
+	}
 ]
 
 const router = new VueRouter({
-  routes
+	routes
 })
 
 export default router

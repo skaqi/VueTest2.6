@@ -32,6 +32,7 @@
     <div class="products">
         <ul>
             <li v-for="product in productList" :key="product.id">
+								<!-- router-link 的使用，to传参 -->
                 <router-link :to="'/productDetail?pid='+product.id">
                     <img :src="product.productImage" alt="">
                     <p class="p-name">{{product.productName}}</p>

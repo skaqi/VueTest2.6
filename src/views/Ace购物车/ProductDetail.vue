@@ -35,7 +35,7 @@
             <h3>数量</h3>
             <div class="sale-num">
                 <span @click="subNum()">-</span>
-                <input type="text" :value="buyNum" @change="changeNum($event)">
+                <input type="text" :value="buyNum" @change="changeNum($event)"><!-- 使用的$event来传递e本身对象 -->
                 <span @click="addNum()">+</span>
             </div>
             <div style="clear:both"></div>
@@ -106,6 +106,7 @@ export default {
             }
         },
         toPosition(index) {
+						// 模拟锚点的使用：scrollIntoView
             switch (index) {
                 case 1:
                     document.querySelector("#productDetailPage").scrollIntoView();
@@ -130,6 +131,8 @@ export default {
             psotData.append("count",this.buyNum);
             axios.post("http://localhost:1665/ShoppingCarts/AddCart",psotData).then(function(res){
                if (res.data == "success") {
+									 // 还是$route获得参数，$router来跳转。
+									 // 比如：this.$route.query.pid、that.$router.push("/shoppingCart")
                    that.$router.push("/shoppingCart");
                }
             });

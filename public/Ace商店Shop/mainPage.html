@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://vuejs.org/js/vue.min.js"></script>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+</head>
+
+<body>
+    <div id="app">
+        <div class="top">
+            <p>在线服装商城</p>
+            <div>
+                <input type="text" placeholder="请输入搜索内容" v-model="searchText">
+                <button @click="search">搜索</button>
+            </div>
+        </div>
+        <div class="center">
+            <div class="center-tab" v-if="tabIndex==1">
+                <div class="product-sort">
+                    <div :class="['sort-item',{'selected':sortIndex==1}]" @click="changeSort(1)">综合</div>
+                    <div :class="['sort-item',{'selected':sortIndex==2}]" @click="changeSort(2)">浏览</div>
+                    <div :class="['sort-item',{'selected':sortIndex==3}]" @click="changeSort(3)">销量</div>
+                </div>
+                <table>
+                    <tr v-for="item in products">
+                        <td class="pro-img">
+                            <img :src="item.imageUrl" alt="">
+                        </td>
+                        <td class="pro-info">
+                            <p class="p-name">{{item.productName}}</p>
+                            <p class="p-price">￥{{item.price}} <span style="float:right;margin-right:10px"
+                                    @click="addCarts(item)">加入购物车</span> </p>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+            <div class="center-tab" v-if="tabIndex==2">
+                <table>
+                    <tr class="all-check">
+                        <td class="pro-check" colspan="3"><input type="checkbox">全选</td>
+                    </tr>
+                    <tr v-for="item in shoppingCarts">
+                        <td class="pro-check"><input type="checkbox"></td>
+                        <td class="pro-img">
+                            <img :src="item.product.imageUrl" alt="">
+                        </td>
+                        <td class="pro-info">
+                            <p class="p-name">{{item.product.productName}} {{item.size}}</p>
+                            <div class="p-price">
+                                ￥{{item.product.price}}
+                                <p>
+                                    <span @click="subNum(item)">-</span>
+                                    <input type="text" :value="item.count" @change="changeNum(item)">
+                                    <span @click="addNum(item)">+</span>
+                                </p>
+                            </div>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+        <div class="bottom">
+            <div class="btn" v-on:click="changeTab(1)">商品页</div>
+            <div class="btn" v-on:click="changeTab(2)">购物车</div>
+        </div>
+    </div>
+    <script>
+        var vm = new Vue({
+            el: "#app",
+            data: {
+                tabIndex: 1,
+                products: [],
+                sortIndex: 1,
+                searchText: "",
+                shoppingCarts: []
+            },
+            mounted() {
+                this.getProducts();
+            },
+            methods: {
+                getProducts(searchFun) {
+                    this.test(function (a, b) {
+                    })
+										// that还是作用域问题，可以用箭头函数替代
+                    var that = this;
+                    axios.get("https://localhost:44334/Products").then(res => {
+                        console.log(this);
+                        //vm.products = res.data;
+                        //that.products = res.data;
+                        this.products = res.data;
+                        this.changeSort(this.sortIndex);
+												// 还是回调函数的判断使用
+                        if (searchFun != null)
+                            searchFun();
+                    })
+                },
+                getShoppingCarts() {
+                    axios.get("https://localhost:44334/ShoppingCarts").then(res => {
+                        console.log(this);
+                        //vm.products = res.data;
+                        //that.products = res.data;
+                        this.shoppingCarts = res.data;
+                    })
+                },
+                changeTab(tabIndex) {
+                    switch (tabIndex) {
+                        case 1:
+                            break;
+                        case 2:
+                            this.getShoppingCarts();
+                            break;
+                        default:
+                            break;
+                    }
+                    this.tabIndex = tabIndex;
+                },
+                test(fun) {
+                    var a = 1;
+                    var b = 2;
+                    fun(1, 2);
+                },
+                changeSort(index) {
+                    switch (index) {
+                        case 1:
+                            //this.products.sort(this.sortCompare);
+                            this.products.sort(function (x, y) {
+                                return (y.saleTimes * 1.5 + y.clickTimes) - (x.saleTimes * 1.5 + x.clickTimes);
+                            });
+                            break;
+                        case 2:
+                            //this.products.sort(this.sortClickTimes);
+                            //this.products.sort((x,y)=> y.clickTimes - x.clickTimes);
+                            this.products.sort((x, y) => {
+                                return y.clickTimes - x.clickTimes;
+                            });
+                            break;
+                        case 3:
+                            this.products.sort(this.sortSaleTimes);
+                            break;
+                        default:
+                            break;
+                    }
+                    this.sortIndex = index;
+                },
+                sortClickTimes(x, y) {
+                    return y.clickTimes - x.clickTimes;
+                },
+                sortSaleTimes(x, y) {
+                    return y.saleTimes - x.saleTimes;
+                },
+                sortCompare(x, y) {
+                    return (y.saleTimes * 1.5 + y.clickTimes) - (x.saleTimes * 1.5 + x.clickTimes);
+                },
+                search() {
+                    // this.getProducts(() => {
+                    //     this.products = this.products.filter(m => m.productName.includes(this.searchText));
+                    // });
+                    axios.get("https://localhost:44334/Products/str/" + this.searchText).then(res => {
+                        this.products = res.data;
+                    })
+                },
+                addCarts(product) {
+                    let count = 1;
+                    //165,170,175,180,190,195
+                    let size = product.sizes.split(",")[0];
+                    let pid = product.id;
+                    axios.post("https://localhost:44334/ShoppingCarts", { count, size, productId: pid }).then(res => {
+                        console.log(res);
+                    })
+                },
+                subNum(product) {
+                    if (product.count > 1)
+                        product.count--;
+                },
+                addNum(product) {
+                    product.count++;
+                },
+                changeNum(product){
+                   var currval = event.target.value;
+                    if(!isNaN(currval) && currval>0){
+                        product.count = currval;
+                    }else {
+                        event.target.value =  product.count;
+                    }
+                }
+            },
+
+        })
+
+    </script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+        }
+
+        .top {
+            background-color: red;
+            padding: 5px 0 10px 0;
+        }
+
+        .top p {
+            color: #fff;
+            text-align: center;
+            font-size: 14px;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        .top div {
+            width: 80%;
+            margin: auto;
+            border-radius: 4px;
+            border: 0 none;
+            height: 30px;
+            background-color: #fff;
+        }
+
+        .top input {
+            width: 80%;
+            border-radius: 4px;
+            border: 0 none;
+            height: 28px;
+            outline: none;
+        }
+
+        .top button {
+            border: 0 none;
+            outline: none;
+            background-color: #fff;
+        }
+
+        .center .product-sort {
+            border-bottom: 1px solid #ccc;
+        }
+
+        .center .sort-item {
+            display: inline-block;
+            width: 32%;
+            height: 30px;
+            text-align: center;
+            line-height: 30px;
+            font-size: 13px;
+        }
+
+        .center div.selected {
+            color: red;
+        }
+
+        .center table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .center .all-check {
+            border-bottom: 1px solid #eee;
+        }
+
+        .center .all-check td {
+            border: 0 none;
+        }
+
+        .center td {
+            border-bottom: 6px solid #eee;
+        }
+
+        .center td.pro-check {
+            padding-left: 10px;
+            height: 30px;
+        }
+
+        .center td.pro-img {
+            height: 100px;
+            width: 100px;
+        }
+
+        .center td img {
+            margin-top: 10px;
+            margin-left: 10px;
+            height: 80px;
+            width: 80px;
+            float: left;
+            vertical-align: middle;
+        }
+
+        .center td .pro-info {
+            height: 90px;
+            float: left;
+            padding-top: 10px;
+            padding-left: 10px;
+        }
+
+        .center td .p-name {
+            font-size: 14px;
+            padding-bottom: 10px;
+        }
+
+        .center td .p-price {
+            color: red;
+            font-weight: bold;
+        }
+
+        .center td .p-price p {
+            float: right;
+            color: #666;
+            margin-right: 10px;
+        }
+
+        .center td .p-price p span {
+            display: inline-block;
+            height: 25px;
+            width: 25px;
+            border-radius: 25px;
+            border: 1px solid #ccc;
+            line-height: 25px;
+            text-align: center;
+            font-weight: normal;
+        }
+
+        .center td .p-price p input[type="text"] {
+            height: 25px;
+            text-align: center;
+            border: 0 none;
+            outline: none;
+            width: 30px;
+        }
+
+        .bottom {
+            border-top: 1px solid #ccc;
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+        }
+
+        .bottom .btn {
+            width: 49%;
+            display: inline-block;
+            border-right: 1px solid #ccc;
+            height: 30px;
+            text-align: center;
+            line-height: 30px;
+        }
+    </style>
+</body>
+
+</html>

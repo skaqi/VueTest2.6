@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="../lib/vue.min.js"></script>
+    <script src="../lib/axios.min.js"></script>
+</head>
+
+<body>
+    <div id="UserList">
+        <input type="checkbox" v-model="allChecked" @change="changeAll"> 全选
+        <ul>
+            <li v-for="user in userList"><input type="checkbox" v-model="user.isChecked" @change="checkChange(user)">
+                {{user.userName}}——{{user.age}}——{{user.isChecked}}
+                <p>公司:{{user.company.companyName}}</p>
+                <p>地址:{{user.company.companyAddress}}</p>
+                <span @click="del(user.id)">删除</span>
+            </li>
+        </ul>
+    </div>
+    <script>
+        var vm = new Vue({
+            el: "#UserList",
+            data: {
+                userList: [],
+                allChecked: false,
+                //userChecked: []
+            },
+            mounted() {
+                axios.get("http://localhost:21021/api/services/app/Login/GetPersonAll")
+                    .then(res => {
+                        if (res.status == 200 && res.data.result != null) {
+                            this.userList = res.data.result;
+														// 是一种思路：提前对数据加工增加一列isChecked
+                            this.userList.forEach(e => {
+                                e["isChecked"] = false;
+                            });
+                            console.log(this.userList);
+                        }
+                    })
+            },
+            methods: {
+                checkChange(user) {
+                    // if (this.userChecked.includes(userName)) {
+                    //     for (let i = 0; i < this.userChecked.length; i++) {
+                    //         if (this.userChecked[i] == userName) {
+                    //             this.userChecked.splice(i, 1);
+                    //         }
+                    //     }
+
+                    // }else
+                    //  this.userChecked.push(userName);
+                    console.log(user);
+										/* 新加的字段列不会双向绑定，用两种方法解决：
+											1.用sort可以刷新视图
+											2.或者用$forceUpdate更新也可以
+										*/
+                    //this.userList.sort();
+                    this.$forceUpdate();
+
+										/* 全选的实现：
+											1、判断数组选中个数（常规做法）
+											2、every或者some是相反的，简便一句话实现（比较推荐）
+										 */
+                    // if(this.userList.length == this.userList.filter(m=>m.isChecked).length){
+                    //     this.allChecked = true;
+                    // }else {
+                    //     this.allChecked = false;
+                    // }
+                    //every
+                    // if (this.userList.every(m => m.isChecked))
+                    //     this.allChecked = true;
+                    // else this.allChecked = false;
+                    //some
+                    if (this.userList.some(m => !m.isChecked))
+                         this.allChecked = false;
+                     else this.allChecked = true;
+                },
+                changeAll(){
+									// forEach用法
+                  this.userList.forEach(m=>m.isChecked = this.allChecked)
+                   
+                },
+                del(id){
+                    axios.get("http://localhost:21021/api/services/app/Login/Delete",{params:{id:1}})
+                    .then(res => {
+                        if (res.status == 200 && res.success) {}
+                    })
+                }
+            },
+        })
+    </script>
+</body>
+
+</html>

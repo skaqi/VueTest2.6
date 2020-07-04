@@ -39,7 +39,7 @@
 				/*第一个问题:这里可以不用常规的emit事件接收,而在外面使用sync修饰符也可以直接改update:score更简便*/
 				//this.$emit("set-score",i);
 				this.$emit("update:score", i);
-				
+
 				/*第二问题:可能会异步出现问题,建议使用$nextTick异步处理,即可解决:没有及时的被重新计算宽度问题*/
 				this.$nextTick(() => {
 					this.getWidth();
@@ -50,7 +50,7 @@
 </script>
 
 <style>
-	.iconfont{
-		src:url(../../public/imgs/icons/Logo2.png)
+	.iconfont {
+		src: url(../../public/imgs/icons/Logo2.png)
 	}
 </style>

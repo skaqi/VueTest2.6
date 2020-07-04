@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="../lib/vue.min.js"></script>
+    <script src="../lib/axios.min.js"></script>
+</head>
+<body>
+    <div id="LoginPage">
+        <div class="login-pad">
+            <p class="l-title">登陆系统</p>
+            <p><span>用户：</span><input placeholder="请输入用户名" type="text" v-model="userName"></p>
+            <p><span>密码：</span><input placeholder="请输入密码" type="password" v-model="password"></p>
+            <p><button @click="login">登录</button></p>
+        </div>
+        <div class="footer">
+            &copy;版权所有XXXXX
+        </div>
+    </div>
+    <script>
+        var vm = new Vue({
+            el:"#LoginPage",
+            data:{
+                userName:"",
+                password:""
+            },
+            methods: {
+                login:function(){
+                    var that = this;
+                    var userName=this.userName;
+                    var password=this.password;
+                   axios.get("http://localhost:21021/api/services/app/Login/GetPersonByNameAndPwd?UserName="+userName+"&Password="+password)
+                   .then(res=>{
+                    if(res.status==200 && res.data.result!=null){
+                        location.href="UserList.html";
+                    }
+                   })
+                }
+            },
+        });
+        
+    </script>
+    <style>
+        html{
+            background-color: cornflowerblue;
+        }
+        *{
+            padding: 0;
+            margin: 0;
+        }
+        #LoginPage{
+           
+            overflow: hidden;
+        }
+        .login-pad{
+            background-color:rgba(255, 255, 255, 0.582);
+            width: 70%;
+            margin: 30% auto;
+            padding: 10px;
+            border-radius: 5px;
+            box-shadow: 3px 3px 3px #000;
+        }
+        .login-pad .l-title{
+            text-align: center;
+            font-size: 18px;
+            font-weight: bold;
+        }
+        .login-pad p {
+            margin-bottom: 10px;
+        }
+        .login-pad p input{
+            border:0 none;
+            border-radius: 3px;
+            height: 30px;
+        }
+        .login-pad p button{
+            display: block;
+            width: 90%;
+            margin: auto;
+            height: 36px;
+            border-radius: 3px;
+            background-color: cornflowerblue;
+            font-size: 16px;
+            color:#fff;
+            border:0 none;
+        }
+        .footer{
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            text-align: center;
+        }
+    </style>
+</body>
+</html>

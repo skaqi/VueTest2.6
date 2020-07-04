@@ -1,13 +1,14 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 
-import ProductList from '../views/ProductList.vue'
-import ProductDetail from '../views/ProductDetail.vue'
+import ProductList from '../views/Ace购物车/ProductList.vue'
+import ProductDetail from '../views/Ace购物车/ProductDetail.vue'
+import ShoppingCart from '../views/Ace购物车/ShoppingCart.vue'
 
-import Home from '../views/Home.vue'
-import Detail from '../views/Detail.vue'
+import Home from '../views/Ace朝夕集市网/Home.vue'
+import Detail from '../views/Ace朝夕集市网/Detail.vue'
 
-import RatePF from '../views/评分/RatePF.vue'
+import RatePF from '../views/金渡评分/RatePF.vue'
 
 
 Vue.use(VueRouter)

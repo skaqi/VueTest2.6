@@ -76,6 +76,7 @@ export default {
             console.log(this.selectCart)
         },
         isSelect(cid) {
+						// includes包含用法
             return this.selectCart.includes(cid);
         },
         getTotalPrice() {

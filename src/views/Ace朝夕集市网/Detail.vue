@@ -9,6 +9,7 @@
 
 <script>
 import axios from 'axios';
+// qs引入（序列化）
 import qs from 'qs';
 export default {
     data() {

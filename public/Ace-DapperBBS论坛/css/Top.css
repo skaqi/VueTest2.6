@@ -1,0 +1,21 @@
+#header{
+    height: 40px;
+    width: 100%;
+    text-align: right;
+    background-color: #333;
+    color: #fff;
+    line-height: 40px;
+   
+}
+#header img{
+    width: 280px;
+    height: 38px;
+    margin-top: 1px;
+    margin-left: 1px;
+    float: left;
+}
+
+#header .user-login span {
+    margin-right: 16px;
+    cursor: pointer;
+}

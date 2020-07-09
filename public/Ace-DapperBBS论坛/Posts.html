@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="css/Top.css">
+    <script src="https://vuejs.org/js/vue.min.js"></script>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <script src="components/Top.js"></script>
+    <title>Document</title>
+</head>
+
+<body>
+    <div id="app">
+        <top @showloginpad="showLogin" :username="userName"></top>
+        <div id="showPad">
+            <div class="nav">
+                <a class="main-page"></a>
+                <em></em>
+                <a>单机游戏</a>
+                <em></em>
+                <a>《全面战争：三国》</a>
+            </div>
+            <div class="backgroud">
+                <img src="http://att.3dmgame.com/att/forum/201905/19/120255ccxhvvggvtvconrr.png" alt="">
+                <h2>《全面战争：三国》等你来战</h2>
+            </div>
+        </div>
+        <div id="edit">
+            <button>发帖</button>
+        </div>
+        <div id="post">
+            <table>
+                <thead>
+                    <tr>
+                        <td colspan="2">
+                            <span>全部主题</span>
+                            <span>最新</span>
+                            <span>热门</span>
+                            <span>热帖</span>
+                            <span>精华</span>
+                        </td>
+                        <td>作者</td>
+                        <td>回复/查看</td>
+                        <td>最后发表</td>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr v-for="post in posts">
+                        <td class="post-icon">
+                            <img src="https://bbs.3dmgame.com/static/image/common/folder_new.gif" alt="">
+                        </td>
+                        <td class="post-name">
+                            <em>[{{post.postType}}]</em>
+                            <a href="">{{post.postTitle}}</a>
+                        </td>
+                        <td><span>{{post.createUserInfo.userName}}</span><span>{{post.createTime|time}}</span></td>
+                        <td><span>{{post.replys}}</span><span>{{post.clicks}}</span></td>
+                        <td><span>{{post.lastReplyUserInfo.userName}}</span><span>{{post.lastReplyTime|time}}</span></td>
+                    </tr>
+                </tbody>
+
+            </table>
+        </div>
+        <div id="loginPad" v-show="isShowLogin">
+            <span @click="showLogin(false)">×</span>
+            <h3>用户登录</h3>
+            <p>
+                <input type="text" name="" id="" v-model="userNameInput" placeholder="输入用户名">
+            </p>
+            <p>
+                <input type="password" name="" id="" v-model="passwordInput" placeholder="输入密码">
+            </p>
+            <p>
+                <button @click="login">登录</button>
+            </p>
+            <p><i v-show="isShowWarn">*账号或密码错误</i></p>
+        </div>
+    </div>
+    <script>
+
+				/* 认为：只需单个处理的用方法即带括号，需要多个处理的就是对象，比如：
+					data（这里是指cli里的）、mounted、created，这些都是【方法】写法，比如：xxx(){ }
+					data（页面data）、components、computed、methods、 这些都是【属性】写法（因为里面还有属性或方法呢），比如：xxx: { } 
+				*/
+        var vm = new Vue({
+            el:"#app",
+            data:{
+                posts:[]  ,
+                isShowLogin:false,
+                userNameInput:"",
+                passwordInput:"",
+                userName:"",
+                isShowWarn:false,
+            },
+            mounted() {
+                this.getPosts();
+								// mounted下赋值一下当前localStorage，是在登录时添加的
+                if(localStorage["userName"]!=null && localStorage["userName"]!=""){
+                    this.userName = localStorage["userName"];
+                }
+            },
+            methods: {
+                getPosts(){
+                    axios.get("https://localhost:44398/post").then(res=>{
+                        this.posts = res.data;
+                    })
+                },
+                transTime(time){
+                    time = time.replace("T"," ");
+                    return time.substring(0,time.lastIndexOf(":"))
+                },
+                showLogin(isShow){
+                    this.isShowLogin = isShow;
+                },
+                login(){
+										// 参数的追加
+                    var data = new URLSearchParams();
+                    data.append("n",this.userNameInput);
+                    data.append("p",this.passwordInput);
+                    axios.post("https://localhost:44398/login",data).then(res=>{
+                        if (res.data!=""){
+                            this.userName = res.data.userName;
+                            this.isShowWarn = false;
+                            this.isShowLogin = false;
+                            localStorage["userName"] = this.userName;
+                        }else {
+                            this.isShowWarn = true;
+                        }
+                    })
+                }
+            },
+            filters:{
+								// 过滤器的使用
+                time(time){
+                    time = time.replace("T"," ");
+                    return time.substring(0,time.lastIndexOf(":"))
+                }
+            }
+        })
+    </script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+        }
+       
+
+        #showPad {
+            width: 98%;
+            border: 1px solid #ccc;
+            margin: 20px auto;
+        }
+
+        #showPad .nav {
+            padding-top: 6px;
+            padding-bottom: 6px;
+            padding-left: 10px;
+        }
+
+        #showPad .nav .main-page {
+            display: inline-block;
+            width: 16px;
+            background: url(https://bbs.3dmgame.com/static/image/common/search.png) no-repeat 0 0;
+            overflow: hidden;
+        }
+
+        #showPad .nav a {
+            display: inline-block;
+            height: 30px;
+            line-height: 30px;
+            color: #666;
+            font-size: 14px;
+            overflow: hidden;
+        }
+
+        #showPad .nav a:active {
+            color: #666;
+        }
+
+        #showPad .nav em {
+            display: inline-block;
+            width: 16px;
+            height: 30px;
+            line-height: 30px;
+            overflow: hidden;
+            background: url(https://bbs.3dmgame.com/static/image/common/pt_item.png) no-repeat 3px 10px;
+        }
+
+        #showPad .backgroud {
+            width: 100%;
+            text-align: center;
+        }
+
+        #showPad .backgroud h2{
+          color:blue;
+          margin-top: 10px;
+          margin-bottom: 10px;
+        }
+        #edit
+        {
+            width: 98%;
+            margin: auto;
+            border:1px solid #fff;
+            margin-bottom: 10px;
+        }
+        #edit button{
+            background-color: rgb(19, 73, 175);
+            color:#fff;
+            border:0 none;
+            width: 80px;
+            height: 32px;
+        }
+        #post{
+            width: 98%;
+            margin: auto;
+            border:1px solid #ccc;
+            margin-bottom: 20px;
+        }
+        #post table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        #post table thead td:first-child{
+            text-align: left;
+        }
+        #post table thead td{
+            background-color: #eee;
+            height: 40px;
+            font-size: 14px;
+            text-align: center;
+        }
+        #post table thead td span{
+            margin-left: 20px;
+            color:cornflowerblue;
+        }
+        #post table tbody td {
+            height: 40px;
+            font-size: 14px;
+        }
+        #post table tbody td.post-icon{
+            width: 20px;
+            padding: 0 6px;
+        }
+        #post table tbody td.post-name em{
+            color:cornflowerblue;
+            font-style: normal;
+        }
+        #post table tbody td.post-name a{
+            color:#333;
+            text-decoration: none;
+        }
+        #post table tbody td.post-name a:active{
+            color:#333;
+        }
+        #post table tbody tr{
+            border-bottom:1px solid #ccc;
+        }
+        #post table tbody tr:last-child{
+            border-bottom:0 none;
+            margin: 0 6px;
+           
+        }
+        #post table tbody td span{
+            display: block;
+            text-align: center;
+            font-size:12px;
+        }
+        #post table tbody td span:last-child{
+            color:#999;
+        }
+        #loginPad{
+            position: fixed;
+            left: 40%;
+            top: 20%;
+            height: 266px;
+            width: 388px;
+            background-color: #fff;
+            border:5px solid #ccc;
+            border-radius: 3px;
+        }
+        #loginPad p{
+            width: 80%;
+            margin: auto;
+        }
+        #loginPad input{
+            width: 100%;
+            margin-top: 20px;
+            height: 30px;
+            border-radius: 3px;
+            border:1px solid #666;
+            display: block;
+        }
+        #loginPad button{
+            width: 100%;
+            margin-top: 20px;
+            height: 36px;
+            border-radius: 3px;
+            border:1px solid brown;
+            background-color: brown;
+            display: block;
+            color:#fff;
+            cursor: pointer;
+        }
+        #loginPad h3{
+            text-align: center;
+            margin-top: 20px;
+        }
+        
+        #loginPad > span{
+            float: right;
+            border:1px solid #ccc;
+            display: block;
+            width: 20px;
+            height: 20px;
+            text-align: center;
+            line-height: 20px;
+            cursor: pointer;
+        }
+        #loginPad p i{
+            color:red;
+            font-size: 14px;
+
+        }
+    </style>
+</body>
+
+</html>

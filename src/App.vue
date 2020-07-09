@@ -34,6 +34,12 @@
 </template>
 
 <script>
+	
+	/* 认为：只需单个处理的用方法就行了即带括号，需要多个处理的就是属性或对象，比如：
+		data（这里是指cli里的）、mounted、created，这些都是【方法】写法，比如：xxx(){ }
+		data（页面data）、components、computed、methods、 这些都是【属性】写法（因为里面还有属性或方法呢），比如：xxx:{ } 
+	*/
+ 
 export default {
     data(){
       return{

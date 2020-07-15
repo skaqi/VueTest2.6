@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>生命周期</title>
+    
+</head>
+<body>
+    <div id="app">
+        <input type="button" value="修改" @click="msg='no'">
+        <h2 id="h2">{{msg}}</h2>
+    </div>
+    <script src="./vue-2.4.0.js"></script>
+    <script>
+        var vm = new Vue({
+            el:'#app',
+            data:{
+                msg:'ok'
+            },
+            methods:{
+                show(){
+                    console.log('执行了show方法');
+                    
+                }
+            },
+            beforeCreate(){
+                // 实例被创建出来之前会执行
+                // console.log(this.msg);
+                // this.show()
+                // data 和 methods都没有被初始
+            },
+            created(){
+                // console.log(this.msg);
+                // this.show()
+            },
+            beforeMount(){
+                // 表示模板已经在内存中编辑完成了 但是没有把模板渲染到页面中
+                // console.log(document.getElementById("h2").innerText);
+                // 页面中的元素没有被真正替换过来 
+            },
+            mounted(){
+                // console.log(document.getElementById("h2").innerText);
+            },
+            beforeUpdate(){
+                // console.log(document.getElementById("h2").innerText);
+                // console.log(this.msg);
+                // 页面中显示的数据还是旧的 此时data的数据是最新的 页面尚未和最新的数据同步
+            },
+            updated(){
+                console.log(document.getElementById("h2").innerText);
+                console.log(this.msg);
+            }
+						/* 
+							beforeCreate => 连变量还未实例化的状态
+							created => 常用在请求数据库初始化data，但不要用$el
+							beforeMount => 模版还未被渲染，模版状态
+							mounted => 常用的钩子，挂载渲染后了
+							beforeUpdate => 修改事件触发前夕，dom数据是旧的data是新的，页面尚未同步的状态
+							updated => data更新了dom数据，此时同步了
+						 */
+        })
+    </script>
+</body>
+</html>

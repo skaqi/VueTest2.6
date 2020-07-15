@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>stop</title>
+    <style>
+        .inner{
+            height:150px;
+            background-color: darkcyan;
+        }
+
+
+    </style>
+</head>
+<body>
+    <div id="root">
+        <a href="http://www.baidu.com" @click.prevent="linkClick">有问题去百度</a>
+    </div>
+    <script src="../vue-2.4.0.js"></script>
+    <script>
+        var vm = new Vue({
+            el:"#root",
+            data:{},
+            methods:{
+                linkClick(){
+                    console.log('这里是触发了a链接的事件');
+                    
+                },
+            }
+        })
+
+
+    </script>
+</body>
+</html>

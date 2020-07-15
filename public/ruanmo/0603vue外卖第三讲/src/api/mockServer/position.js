@@ -1,0 +1,1 @@
+export default { "address": "湖北省武汉市洪山区楚平路3号", "city": "广东省", "geohash": "23.10647,113.32446", "latitude": "23.10647", "longitude": "113.32446", "name": "湖北省武汉市洪山区楚平路3号" }

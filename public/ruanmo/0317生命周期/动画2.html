@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>动画2</title>
+    <link rel="stylesheet" href="./animate.css">
+</head>
+<body>
+    <div id="app">
+        <input type="button" value="toggle" @click="flag = !flag">
+        <!--点击按钮 让h2显示 再次点击隐藏-->
+        <!-- <transition enter-active-class="animated bounceIn" leave-active-class="animated bounceOut">
+            <h2 v-if="flag">这是一段h2的文字</h2>
+        </transition> -->
+        <!-- <transition enter-active-class="animated bounceIn" leave-active-class="animated bounceOut" :duration="200">
+            <h2 v-if="flag">这是一段h2的文字</h2>
+        </transition> -->
+        <transition enter-active-class="animated bounceIn" leave-active-class="animated bounceOut" :duration="{enter:200,leave:400}">
+            <h2 v-if="flag">这是一段h2的文字</h2>
+        </transition>
+    </div>
+    <script src="./vue-2.4.0.js"></script>
+    <script>
+        var vm = new Vue({
+            el:'#app',
+            data:{
+                flag:false
+            },
+            methods:{
+            },
+            
+
+        })
+    </script>
+</body>
+</html>

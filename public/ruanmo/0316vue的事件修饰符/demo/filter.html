@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>stop</title>
+    <style>
+        .inner{
+            height:150px;
+            background-color: darkcyan;
+        }
+
+
+    </style>
+</head>
+<body>
+    <div id="root">
+        <p>{{msg | msgFormat('疯狂','清纯') | test}}</p>
+        <h2>{{dt | dateFormat('yyyy-mm-dd')}}</h2>
+    </div>
+    <script src="../vue-2.4.0.js"></script>
+    <script>
+        // 全局过滤器是每一个组件都可以使用的
+        Vue.filter('msgFormat',function(msg,arg,arg2){
+            return msg.replace(/单纯/g,arg+arg2)
+        })
+        Vue.filter('test',function(msg){
+            return msg+'========='
+        })
+        var vm = new Vue({
+            el:"#root",
+            data:{
+                msg:"曾经，我也是一个单纯的少年，单纯的我，傻傻的问，谁是世界上最单纯的男人",
+                dt:new Date()
+            },
+            methods:{
+               
+            },
+            filters:{
+                dateFormat:function(dateStr,partten=''){
+                    var dt = new Date()
+                    var y = dt.getFullYear()
+                    var m = (dt.getMonth() + 1).toString().padStart(2,'0')
+                    var d = (dt.getDate()).toString().padStart(2,'0')
+
+                    if(partten.toLowerCase() === 'yyyy-mm-dd'){
+                        return `${y}-${m}-${d}`
+                    }else{
+                        var hh = dt.getHours().toString().padStart(2,'0')
+                        var mm = dt.getMinutes().toString().padStart(2,'0')
+                        var ss = dt.getSeconds().toString().padStart(2,'0')
+                        return `${y}-${m}-${d} ${hh}:${mm}:${ss}=====`
+                    }
+                }
+            }
+        })
+
+
+    </script>
+</body>
+</html>

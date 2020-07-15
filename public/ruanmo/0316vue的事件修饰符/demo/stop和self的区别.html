@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>stop</title>
+    <style>
+        .outer{
+            padding:40px;
+            background-color: red;
+        }
+        .inner{
+            height:150px;
+            background-color: darkcyan;
+        }
+
+
+    </style>
+</head>
+<body>
+    <div id="root">
+        <div class="outer" @click="outerHandel">
+            <div class="inner" @click.self="divHandel">
+                <input type="button" value="点击" @click="btnHandel">
+            </div>
+
+        </div>
+
+    </div>
+    <script src="../vue-2.4.0.js"></script>
+    <script>
+        var vm = new Vue({
+            el:"#root",
+            data:{},
+            methods:{
+                divHandel(){
+                    console.log('这里是触发了 innerdiv的事件');
+                    
+                },
+                btnHandel(){
+                    console.log('这里是触发了btn事件');
+                    
+                },
+                outerHandel(){
+                    console.log('这里是触发了 outerdiv的事件');
+                    
+                }
+            }
+        })
+
+
+    </script>
+</body>
+</html>

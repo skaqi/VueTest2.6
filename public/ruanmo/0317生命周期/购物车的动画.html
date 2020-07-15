@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>动画2</title>
+    <style>
+        .ball{
+            width:15px;
+            height: 15px;
+            border-radius: 50%;
+            background-color: red;
+        }
+    </style>
+</head>
+<body>
+    <div id="app">
+        <input type="button" value="toggle" @click="flag = !flag">
+        <transition 
+            @before-enter="beforeEnter"
+            @enter="enter"
+            @after-enter="afterEnter"
+        >
+            <div class="ball" v-show="flag"></div>
+        </transition>
+    </div>
+    <script src="./vue-2.4.0.js"></script>
+    <script>
+        var vm = new Vue({
+            el:'#app',
+            data:{
+                flag:false
+            },
+            methods:{
+                beforeEnter(el){
+                    // el 标识要执行动画的dom元素
+                    // 可以认为是通过document.getElementById 获取到的
+                    // 动画入场之前 此时动画尚未开始 可以在这里 设置元素开始动画之前的起始样式
+                    // 可以设置小球开始动画之前的起始位置
+                    el.style.transform = "translate(0, 0)"
+                },
+                enter(el,done){
+                    // 可以认为这句话是强制动画刷新 没有实际作用但是不写的话 动画不会实现
+                    el.offsetWidth
+                    // 表示动画开始之后的样式 
+                    el.style.transform = "translate(150px,450px)"
+                    el.style.transition = "all 1s ease"
+                    // afterEnter的引用
+                    done()
+
+                },
+                afterEnter(){
+                    // 动画完成之后
+                    this.flag = !this.flag
+                }
+            },
+						// 另外：vue自带transition动画标签及样式（可用在购物车添加瞬间的动画效果上）***
+        })
+    </script>
+</body>
+</html>

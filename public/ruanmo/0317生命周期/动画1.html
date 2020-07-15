@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>生命周期</title>
+    <style>
+        .my-enter,
+        .my-leave-to{
+            opacity: 0;
+            transform: translateX(150px);
+        }
+        .my-enter-active,
+        .my-leave-active{
+            transition: all 0.8s ease;
+        }
+    </style>
+</head>
+<body>
+    <div id="app">
+        <input type="button" value="toggle" @click="flag = !flag">
+        <!--点击按钮 让h2显示 再次点击隐藏-->
+        <transition name="my">
+            <h2 v-if="flag">这是一段h2的文字</h2>
+        </transition>
+        
+    </div>
+    <script src="./vue-2.4.0.js"></script>
+    <script>
+        var vm = new Vue({
+            el:'#app',
+            data:{
+                flag:false
+            },
+            methods:{
+            },
+            
+
+        })
+    </script>
+</body>
+</html>
